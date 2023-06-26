@@ -9,8 +9,9 @@ const User = g.model('User', {
   githubUrl: g.url().optional(),
   linkedinUrl: g.url().optional(),
   projects: g.relation(() => Project).list().optional(),
+}).auth((rules) => {
+  rules.public().read()
 })
-
 
 // @ts-ignore
 const Project = g.model('Project', {
@@ -31,10 +32,11 @@ const jwt = auth.JWT({
   secret:  g.env('NEXTAUTH_SECRET')
 })
 
+// @ts-ignore
 export default config({
   schema: g,
-  // auth: {
-  //   providers: [jwt],
-  //   rules: (rules) => rules.private()
-  // },
+  auth: {
+    providers: [jwt],
+    rules: (rules) => rules.private()
+  },
 })
